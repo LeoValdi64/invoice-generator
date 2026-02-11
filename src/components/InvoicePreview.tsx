@@ -18,14 +18,14 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
   const total = calculateTotal(subtotal, tax);
 
   return (
-    <div className="invoice-preview bg-white p-8 sm:p-10 min-h-[700px] text-slate-800">
+    <div className="invoice-preview bg-white p-5 sm:p-10 min-h-[700px] text-slate-800">
       {/* Header */}
-      <div className="flex justify-between items-start mb-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8 sm:mb-10">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">INVOICE</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">INVOICE</h2>
           <p className="text-sm text-slate-500 mt-1">{invoice.invoiceNumber}</p>
         </div>
-        <div className="text-right">
+        <div className="sm:text-right">
           <div className="text-sm text-slate-500">
             <div>
               <span className="font-medium text-slate-600">Issued:</span>{" "}
@@ -52,7 +52,7 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
       </div>
 
       {/* From / To */}
-      <div className="grid grid-cols-2 gap-8 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
         <div>
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
             From
@@ -88,19 +88,20 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
 
       {/* Line Items Table */}
       <div className="mb-8">
-        <table className="w-full">
+        {/* Desktop table */}
+        <table className="w-full hidden sm:table">
           <thead>
             <tr className="border-b-2 border-slate-200">
               <th className="text-left py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Description
               </th>
-              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-20">
+              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-16">
                 Qty
               </th>
-              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-28">
+              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">
                 Rate
               </th>
-              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-28">
+              <th className="text-right py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-24">
                 Amount
               </th>
             </tr>
@@ -122,11 +123,31 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
             ))}
           </tbody>
         </table>
+
+        {/* Mobile card layout */}
+        <div className="sm:hidden space-y-3">
+          <div className="border-b-2 border-slate-200 pb-2">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Items</p>
+          </div>
+          {invoice.items.map((item, index) => (
+            <div key={index} className="border-b border-slate-100 pb-3">
+              <p className="text-sm font-medium text-slate-700 mb-1">
+                {item.description || "Item description"}
+              </p>
+              <div className="flex justify-between text-sm text-slate-500">
+                <span>{item.quantity} x {formatCurrency(item.rate, invoice.currency)}</span>
+                <span className="font-medium text-slate-800">
+                  {formatCurrency(item.quantity * item.rate, invoice.currency)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Totals */}
-      <div className="flex justify-end mb-10">
-        <div className="w-64">
+      <div className="flex justify-end mb-8 sm:mb-10">
+        <div className="w-full sm:w-64">
           <div className="flex justify-between py-2 text-sm">
             <span className="text-slate-500">Subtotal</span>
             <span className="font-medium text-slate-700">

@@ -36,29 +36,29 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Header */}
       <header className="no-print bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-white" />
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900">InvoiceForge</h1>
-              <p className="text-xs text-slate-500">Free Invoice Generator</p>
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold text-slate-900 truncate">InvoiceForge</h1>
+              <p className="text-xs text-slate-500 hidden sm:block">Free Invoice Generator</p>
             </div>
           </div>
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium transition-colors cursor-pointer shrink-0"
           >
             <Download className="w-4 h-4" />
-            Download PDF
+            <span className="hidden sm:inline">Download</span> PDF
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="no-print max-w-[1600px] mx-auto px-4 sm:px-6 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <main className="no-print max-w-[1600px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
           {/* Form */}
           <div>
             <InvoiceForm invoice={invoice} onChange={setInvoice} />
@@ -66,11 +66,11 @@ export default function Home() {
 
           {/* Preview */}
           <div className="xl:sticky xl:top-24 xl:self-start">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3 sm:mb-4">
               Live Preview
             </h2>
             <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-              <div className="max-h-[80vh] overflow-y-auto">
+              <div className="max-h-[80vh] overflow-y-auto overflow-x-hidden">
                 <InvoicePreview invoice={invoice} />
               </div>
             </div>

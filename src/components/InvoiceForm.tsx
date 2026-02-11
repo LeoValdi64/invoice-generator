@@ -217,8 +217,8 @@ export default function InvoiceForm({ invoice, onChange }: InvoiceFormProps) {
           </button>
         </div>
 
-        {/* Table Header */}
-        <div className="hidden sm:grid sm:grid-cols-[1fr_100px_120px_120px_40px] gap-3 mb-2 px-1">
+        {/* Table Header - desktop only */}
+        <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_100px_40px] gap-3 mb-2 px-1">
           <span className="text-xs font-medium text-slate-500">Description</span>
           <span className="text-xs font-medium text-slate-500">Qty</span>
           <span className="text-xs font-medium text-slate-500">Rate</span>
@@ -230,47 +230,103 @@ export default function InvoiceForm({ invoice, onChange }: InvoiceFormProps) {
           {invoice.items.map((item, index) => (
             <div
               key={index}
-              className="grid grid-cols-1 sm:grid-cols-[1fr_100px_120px_120px_40px] gap-3 items-center bg-slate-50 rounded-lg p-3 sm:p-2"
+              className="bg-slate-50 rounded-lg p-3 sm:p-2"
             >
-              <input
-                type="text"
-                value={item.description}
-                onChange={(e) => updateItem(index, "description", e.target.value)}
-                placeholder="Item description"
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="number"
-                value={item.quantity}
-                onChange={(e) =>
-                  updateItem(index, "quantity", Math.max(0, Number(e.target.value)))
-                }
-                min={0}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="number"
-                value={item.rate}
-                onChange={(e) =>
-                  updateItem(index, "rate", Math.max(0, Number(e.target.value)))
-                }
-                min={0}
-                step={0.01}
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <div className="px-3 py-2 text-sm font-medium text-slate-700">
-                {(item.quantity * item.rate).toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+              {/* Desktop row */}
+              <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_100px_40px] gap-3 items-center">
+                <input
+                  type="text"
+                  value={item.description}
+                  onChange={(e) => updateItem(index, "description", e.target.value)}
+                  placeholder="Item description"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) =>
+                    updateItem(index, "quantity", Math.max(0, Number(e.target.value)))
+                  }
+                  min={0}
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="number"
+                  value={item.rate}
+                  onChange={(e) =>
+                    updateItem(index, "rate", Math.max(0, Number(e.target.value)))
+                  }
+                  min={0}
+                  step={0.01}
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <div className="px-3 py-2 text-sm font-medium text-slate-700">
+                  {(item.quantity * item.rate).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </div>
+                <button
+                  onClick={() => removeItem(index)}
+                  disabled={invoice.items.length <= 1}
+                  className="p-2 text-slate-400 hover:text-red-500 transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
-              <button
-                onClick={() => removeItem(index)}
-                disabled={invoice.items.length <= 1}
-                className="p-2 text-slate-400 hover:text-red-500 transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+
+              {/* Mobile layout */}
+              <div className="sm:hidden space-y-2">
+                <input
+                  type="text"
+                  value={item.description}
+                  onChange={(e) => updateItem(index, "description", e.target.value)}
+                  placeholder="Item description"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Qty</label>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateItem(index, "quantity", Math.max(0, Number(e.target.value)))
+                      }
+                      min={0}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Rate</label>
+                    <input
+                      type="number"
+                      value={item.rate}
+                      onChange={(e) =>
+                        updateItem(index, "rate", Math.max(0, Number(e.target.value)))
+                      }
+                      min={0}
+                      step={0.01}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-slate-700">
+                    Amount: {(item.quantity * item.rate).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                  <button
+                    onClick={() => removeItem(index)}
+                    disabled={invoice.items.length <= 1}
+                    className="p-2 text-slate-400 hover:text-red-500 transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
